@@ -73,10 +73,17 @@ class SiteController extends Controller
 	 */
 	public function actionLogin()
 	{
+		/*echo is_user_logged_in();
+		
+		exit();*/
 		$model=new LoginForm;
-
+		if($model->validate() && $model->login()){
+			$this->redirect(Yii::app()->user->returnUrl);
+		}else{
+			$this->redirect(Yii::app()->baseUrl."/wordpress/wp-login.php?redirect_to=".'http://'.$_SERVER['HTTP_HOST'].Yii::app()->user->returnUrl);
+		}
 		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+		/*if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
@@ -91,7 +98,7 @@ class SiteController extends Controller
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
 		// display the login form
-		$this->render('login',array('model'=>$model));
+		$this->render('login',array('model'=>$model));*/
 	}
 
 	/**

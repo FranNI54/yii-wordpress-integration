@@ -39,4 +39,12 @@ class ContactForm extends CFormModel
 			'verifyCode'=>'Verification Code',
 		);
 	}
+	public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior',
+		);
+	}
 }

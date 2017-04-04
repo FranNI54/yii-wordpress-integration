@@ -11,3 +11,8 @@ protected/config/local.php
 protected/runtime/*
 protected/data/*.db
 protected/tests/report/*
+
+assets
+yii
+wordpress/wp-admin
+wordpress/wp-includes

@@ -1,0 +1,14 @@
+input[type=checkbox].hider {
+   position: absolute;
+   
+   left: -9999px;
+}
+.label-show { 
+  -webkit-appearance: push-button;
+  -moz-appearance: button; 
+  display: inline-block;
+  /*margin: 60px 0 10px 0;*/
+  cursor: pointer;
+}
+input[type=checkbox].hider + form{display:none;}
+input[type=checkbox].hider:checked + form{display:block;}
