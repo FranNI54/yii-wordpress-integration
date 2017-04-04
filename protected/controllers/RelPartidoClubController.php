@@ -1,6 +1,6 @@
 <?php
 
-class RelPartidoJugadorController extends Controller
+class RelPartidoClubController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -15,7 +15,7 @@ class RelPartidoJugadorController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			//'postOnly + delete', // we only allow deletion via POST request
+			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -28,15 +28,15 @@ class RelPartidoJugadorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array(),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update',"plantel",'index','view'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete',"deletePartido"),
+				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -62,17 +62,17 @@ class RelPartidoJugadorController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new RelPartidoJugador;
+		$model=new RelPartidoClub;
 		if(isset($_POST["partido"])){
 			$model->partido=$_POST["partido"];
 		}
-		
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['RelPartidoJugador']))
+		if(isset($_POST['RelPartidoClub']))
 		{
-			$model->attributes=$_POST['RelPartidoJugador'];
+			$model->attributes=$_POST['RelPartidoClub'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -80,44 +80,6 @@ class RelPartidoJugadorController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 		));
-	}
-	
-	public function actionPlantel()
-	{
-		
-		if(isset($_POST["plantel"])&&isset($_POST["partido"])){
-			$jugadores= RelPlantelJugador::model()->findAllByAttributes(array("plantel"=>$_POST["plantel"]));
-			//echo count($jugadores);
-			//exit();
-			foreach($jugadores as $jugador){
-				$model=new RelPartidoJugador;
-				$model->jugador= $jugador->jugador;
-				$model->partido= $_POST["club"];
-				$model->save();
-			}
-			
-		}else{
-			
-		}
-		
-		$this->redirect(array('/partido/'.$_POST["partido"]));
-		//echo "ok";
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		//if(isset($_POST['RelPartidoJugador']))
-		//{
-			//$model->attributes=$_POST['RelPartidoJugador'];
-			//if($model->save())
-			//	$this->redirect(array('view','id'=>$model->id));
-		//}
-
-		//$this->render('create',array(
-		//	'model'=>$model,
-		//));
-		//}else{
-		//	echo "Plantel Inexistente";
-		//}
 	}
 
 	/**
@@ -132,9 +94,9 @@ class RelPartidoJugadorController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['RelPartidoJugador']))
+		if(isset($_POST['RelPartidoClub']))
 		{
-			$model->attributes=$_POST['RelPartidoJugador'];
+			$model->attributes=$_POST['RelPartidoClub'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -151,40 +113,19 @@ class RelPartidoJugadorController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		/*$this->loadModel($id)->delete();
+		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));*/
-		
-		$model=$this->loadModel($id);
-		$jugador=$model->jugador;
-		$model->delete();
-		$this->redirect(array("jugador/view","id"=>$jugador));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
-	
-	public function actionDeletePartido($id)
-	{
-		/*$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));*/
-		
-		$model=$this->loadModel($id);
-		$partido=$model->partido;
-		$model->delete();
-		$this->redirect(array("partido/view","id"=>$partido));
-	}
-	
-	
 
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('RelPartidoJugador');
+		$dataProvider=new CActiveDataProvider('RelPartidoClub');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -195,10 +136,10 @@ class RelPartidoJugadorController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new RelPartidoJugador('search');
+		$model=new RelPartidoClub('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['RelPartidoJugador']))
-			$model->attributes=$_GET['RelPartidoJugador'];
+		if(isset($_GET['RelPartidoClub']))
+			$model->attributes=$_GET['RelPartidoClub'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -209,12 +150,12 @@ class RelPartidoJugadorController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return RelPartidoJugador the loaded model
+	 * @return RelPartidoClub the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=RelPartidoJugador::model()->with("jugador_data")->findByPk($id);
+		$model=RelPartidoClub::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -222,11 +163,11 @@ class RelPartidoJugadorController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param RelPartidoJugador $model the model to be validated
+	 * @param RelPartidoClub $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='rel-partido-jugador-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='rel-partido-club-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

@@ -1,19 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "tbl_plantel".
+ * This is the model class for table "tbl_rel_partido_club".
  *
- * The followings are the available columns in table 'tbl_plantel':
+ * The followings are the available columns in table 'tbl_rel_partido_club':
  * @property integer $id
- * @property string $nombre
+ * @property integer $partido
  * @property integer $club
+ * @property integer $lado
  */
-class Plantel extends CActiveRecord
+class RelPartidoClub extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Plantel the static model class
+	 * @return RelPartidoClub the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -25,7 +26,7 @@ class Plantel extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_plantel';
+		return 'tbl_rel_partido_club';
 	}
 
 	/**
@@ -36,12 +37,11 @@ class Plantel extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, club', 'required'),
-			array('club', 'numerical', 'integerOnly'=>true),
-			array('nombre', 'length', 'max'=>300),
+			array('partido, club, lado', 'required'),
+			array('partido, club, lado', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, nombre, club', 'safe', 'on'=>'search'),
+			array('id, partido, club, lado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,7 +53,8 @@ class Plantel extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-				
+			'club_data'=>array(self::HAS_ONE ,"Club",array('id'=>'club')),
+			'goles'=>array(self::HAS_MANY ,"Gol",array('partido'=>'id'),"with"=>"jugador_data" ),
 		);
 	}
 
@@ -64,8 +65,9 @@ class Plantel extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre',
+			'partido' => 'Partido',
 			'club' => 'Club',
+			'lado' => 'Lado',
 		);
 	}
 
@@ -81,17 +83,12 @@ class Plantel extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('partido',$this->partido);
 		$criteria->compare('club',$this->club);
+		$criteria->compare('lado',$this->lado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-	
-	protected function beforeDelete()
-    {
-		RelPlantelJugador::model()->deleteAll('plantel = '.$this->id);
-		return true;
-    }
 }

@@ -20,6 +20,12 @@
 		<?php echo $form->textField($model,'nombre',array('size'=>60,'maxlength'=>300)); ?>
 		<?php echo $form->error($model,'nombre'); ?>
 	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'club'); ?>
+		<?php echo $form->textField($model,'club',array('size'=>60,'maxlength'=>300)); ?>
+		<?php echo $form->error($model,'club'); ?>
+	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

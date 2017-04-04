@@ -152,7 +152,7 @@ class ClubController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Club::model()->findByPk($id);
+		$model=Club::model()->with("planteles")->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

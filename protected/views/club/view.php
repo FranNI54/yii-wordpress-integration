@@ -26,3 +26,17 @@ $this->menu=array(
 		'ciudad',
 	),
 )); ?>
+
+<h3>Planteles</h3>
+<ul>
+<?php foreach($model->planteles as $plantel){ ?>
+	<li><?php echo $plantel->nombre; ?></li>
+<?php } ?>
+</ul>
+
+<form name="myform" action="<?php echo Yii::app()->request->baseUrl; ?>/plantel/create" method="post">
+	<input type="hidden" name="club"  value="<?php echo $model->id; ?>" />
+	<label>Nombre</label>
+	<input  type="text" name="nombre" />
+	<button style="color:white;">Crear Plantel</button>
+</form>

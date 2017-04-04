@@ -73,20 +73,18 @@ class PlantelController extends Controller
 	public function actionCreate()
 	{
 		$model=new Plantel;
-
+		
+			$model->club= $_POST["club"];
+		
+		$model->nombre=$_POST["nombre"];
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Plantel']))
-		{
-			$model->attributes=$_POST['Plantel'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
+		
+			if($model->save()){
+				//$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('/club/'.$_POST["club"]));
+			}
 	}
 
 	/**

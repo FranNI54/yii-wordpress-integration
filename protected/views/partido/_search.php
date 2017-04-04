@@ -31,31 +31,7 @@
 		<?php echo $form->textField($model,'fecha'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'condicion'); ?>
-		<?php echo $form->textField($model,'condicion',array('size'=>60,'maxlength'=>100)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'rival'); ?>
-		<?php echo $form->textField($model,'rival',array('size'=>60,'maxlength'=>100)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'resultado'); ?>
-		<?php echo $form->textField($model,'resultado',array('size'=>60,'maxlength'=>100)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'convertidos'); ?>
-		<?php echo $form->textField($model,'convertidos'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'victoria'); ?>
-		<?php echo $form->textField($model,'victoria'); ?>
-	</div>
-
+	
 	<div class="row">
 		<?php echo $form->label($model,'comentario'); ?>
 		<?php echo $form->textArea($model,'comentario',array('rows'=>6, 'cols'=>50)); ?>
