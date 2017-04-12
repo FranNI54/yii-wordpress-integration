@@ -26,6 +26,19 @@
 		<?php echo $form->textField($model,'club',array('size'=>60,'maxlength'=>300)); ?>
 		<?php echo $form->error($model,'club'); ?>
 	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'categoria'); ?>
+		<select name="Plantel[categoria]" type="text" >
+			<?php $categorias= Categoria::model()->findAll();
+			foreach($categorias as $categoria){ ?>
+			<option value="<?php echo $categoria->id; ?>" <?php 
+			if(isset($model->categoria)&&$model->categoria==$categoria->id){echo "selected";}
+			?>><?php echo $categoria->nombre; ?></option>
+			<?php } ?>
+		</select>
+		<?php echo $form->error($model,'categoria'); ?>
+	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

@@ -36,7 +36,7 @@ class ClubController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete',"setAvatar"),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -51,8 +51,9 @@ class ClubController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model=Club::model()->with(array("imagenes","data","planteles"))->findByPk($id);
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 
@@ -169,5 +170,17 @@ class ClubController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	
+	public function actionSetAvatar($id,$imagen){
+		$auxRel= RelImagenClub::model()->find("club=$id and avatar=1");
+		if(isset($auxRel)){
+			$auxRel->avatar=0;
+			$auxRel->save();
+		}
+		$auxRel= RelImagenClub::model()->findByPk($imagen);
+		$auxRel->avatar=1;
+		$auxRel->save();
+		echo "1";
 	}
 }

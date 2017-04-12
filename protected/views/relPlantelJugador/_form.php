@@ -26,8 +26,11 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'jugador'); ?>
 		<?php //echo $form->textField($model,'jugador'); ?>
-		<input id="RelPlantelJugador_jugador2" type="text" placeholder="" />
-		<input type="hidden" id="RelPlantelJugador_jugador" type="text" name="RelPlantelJugador[jugador]" />
+		<input id="RelPlantelJugador_jugador2" type="text" placeholder="" <?php if(isset($model->jugador)){ ?> disabled value="<?php 
+		$jugador= Jugador::model()->findByPk($model->jugador);
+		echo $jugador->nombre." ".$jugador->apellido;
+		?>" <?php } ?> />
+		<input type="hidden" id="RelPlantelJugador_jugador" type="text" name="RelPlantelJugador[jugador]" <?php if(isset($model->jugador)){ ?> value="<?php echo $model->jugador; ?>"<?php } ?> />
 		<?php echo $form->error($model,'jugador'); ?>
 	</div>
 
@@ -35,10 +38,16 @@
 		<?php echo $form->labelEx($model,'campo'); ?>
 		<?php //echo $form->textField($model,'campo'); ?>
 		<select name="RelPlantelJugador[campo]" id="RelPlantelJugador_campo">
-		<option value="1">Titular</option>
-		<option value="0">Suplente</option>
+		<option value="1" <?php if(isset($model->campo)&&$model->campo==1){echo "selected";} ?>>Titular</option>
+		<option value="0" <?php if(isset($model->campo)&&$model->campo==0){echo "selected";} ?>>Suplente</option>
 		</select>
 		<?php echo $form->error($model,'campo'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'camiseta'); ?>
+		<?php echo $form->textField($model,'camiseta',array('size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->error($model,'camiseta'); ?>
 	</div>
 
 	<div class="row">

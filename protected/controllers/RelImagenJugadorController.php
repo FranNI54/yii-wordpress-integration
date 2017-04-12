@@ -82,6 +82,18 @@ class RelImagenJugadorController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	/*public function actionDestacada($modelClass,$id,$imagen){
+		$auxRel= RelImagen::model()->find("model=$modelClass and modelId=$id and destacada=1");
+		if(isset($auxRel)){
+			$auxRel->destacada=0;
+			$auxRel->save();
+		}
+		$auxRel= RelImagen::model()->findByPk($imagen);
+		$auxRel->destacada=1;
+		$auxRel->save();
+		echo "1";
+	}*/
 
 	/**
 	 * Updates a particular model.

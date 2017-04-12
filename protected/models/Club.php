@@ -53,6 +53,9 @@ class Club extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'planteles'=>array(self::HAS_MANY ,"Plantel",array('club'=>'id') ),
+			'data'=>array(self::HAS_MANY ,"DataClub",array('club'=>'id') ),
+			'avatar'=>array(self::HAS_MANY ,"RelImagenClub","club","condition"=>"avatar.avatar=1" ),
+			'imagenes'=>array(self::HAS_MANY ,"RelImagenClub",array('club'=>'id'),"with"=>"imagen_data" ),
 		);
 	}
 

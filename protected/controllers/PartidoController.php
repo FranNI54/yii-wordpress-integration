@@ -51,6 +51,7 @@ class PartidoController extends Controller
 	 */
 	public function actionView($id)
 	{
+		//echo get_class($this->loadModel($id));
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -69,12 +70,36 @@ class PartidoController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		
+		
+		
 		if(isset($_POST['Partido']))
 		{
 			$model->attributes=$_POST['Partido'];
-			if($model->save())
+			if($model->save()){
+				
+				/* $modelClass= get_class($model);
+				$defaults= DataDefault::model()->findAllByAttributes(array("model"=>$modelClass));
+				
+
+				
+			
+				
+				
+				 foreach($defaults as $data){
+					 echo "loop";
+					 $auxData= new DataExtra();
+					 $auxData->model= $modelClass;
+					 $auxData->modelId=$model->id;
+					 $auxData->titulo= $data->titulo;
+					 $auxData->texto= $data->texto;
+					 $auxData->save();
+					 var_dump($auxData->getErrors());
+					 
+				 }
+				echo "fin";*/
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(

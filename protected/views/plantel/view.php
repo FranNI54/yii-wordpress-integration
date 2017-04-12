@@ -16,8 +16,9 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Plantel #<?php echo $model->id; ?></h1>
-<a href="<?php echo Yii::app()->request->baseUrl; ?>/campeonato/update/<?php echo $model->id; ?>">Editar plantel</a><br><br>
+<h1>Plantel </h1>
+
+<?php if(is_user_logged_in()){ ?><a href="<?php echo Yii::app()->request->baseUrl; ?>/campeonato/update/<?php echo $model->id; ?>">Editar plantel</a><br><br><?php } ?>
 
 <?php /*$this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -34,11 +35,12 @@ if(count($jugadores)>0){
 <ul>
 <?php foreach($jugadores as $jugador){ 
 	$id= $jugador->id;
-	$jugador= Jugador::model()->findByPk($jugador->jugador);
+	$jugador_data= Jugador::model()->findByPk($jugador->jugador);
 	?>
-	<li><?php echo $jugador->nombre." ".$jugador->apellido; ?>
+	<li><a href="<?php echo Yii::app()->request->baseUrl; ?>/jugador/<?php echo $jugador_data->id; ?>" ><?php if($jugador->camiseta!=0){ ?>  <?php echo $jugador->camiseta; ?> - <?php } ?><?php echo $jugador_data->nombre." ".$jugador_data->apellido; ?></a>
 	<?php if(is_user_logged_in()){ ?>
-	<a href="<?php echo Yii::app()->request->baseUrl; ?>/relPlantelJugador/delete/<?php echo $id; ?>" class="confirmation">Quitar del plantel</a>
+	/ <a href="<?php echo Yii::app()->request->baseUrl; ?>/relPlantelJugador/delete/<?php echo $id; ?>" class="confirmation">Quitar del plantel</a> / 
+	<a href="<?php echo Yii::app()->request->baseUrl; ?>/relPlantelJugador/update/<?php echo $id; ?>">Editar</a>
 	<?php }
 	?></li>
 <?php }?>
@@ -55,6 +57,8 @@ if(count($jugadores)>0){
 <hr>
 <hr>
 
+<?php if(is_user_logged_in()){ ?>
+<h3>Agregar Jugadores al plantel</h3>
 <?php
 $plantel= $model->id;
  $model=new RelPlantelJugador;
@@ -90,6 +94,12 @@ $plantel= $model->id;
 		</select>
 		<?php echo $form->error($model,'campo'); ?>
 	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'camiseta'); ?>
+		<?php echo $form->textField($model,'camiseta',array('size'=>60,'maxlength'=>300)); ?>
+		<?php echo $form->error($model,'camiseta'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'detalle'); ?>
@@ -98,7 +108,7 @@ $plantel= $model->id;
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
@@ -134,5 +144,5 @@ $plantel= $model->id;
 			});
 		});
 	</script>
-
+<?php } ?>
 

@@ -28,6 +28,6 @@ $this->menu=array(
 		'detalle',
 	),
 )); ?>
-asdas
+
 <?php //echo $model->jugador_data["nombre"]; 
 ?>

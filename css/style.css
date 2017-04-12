@@ -12,3 +12,12 @@ input[type=checkbox].hider {
 }
 input[type=checkbox].hider + form{display:none;}
 input[type=checkbox].hider:checked + form{display:block;}
+
+.loadit{
+opacity:0;
+transition:0.5s;
+}
+
+.half-team{
+	width:45%;display:inline-block;border-right:1px solid gray;overflow:hidden;float:left;padding:5px;
+}

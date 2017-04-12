@@ -36,7 +36,7 @@ class DataClub extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('club, data', 'required'),
+			array('club, data, titulo', 'required'),
 			array('club', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -64,6 +64,7 @@ class DataClub extends CActiveRecord
 			'id' => 'ID',
 			'club' => 'Club',
 			'data' => 'Data',
+			'titulo' => 'Titulo',
 		);
 	}
 
@@ -81,6 +82,7 @@ class DataClub extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('club',$this->club);
 		$criteria->compare('data',$this->data,true);
+		$criteria->compare('titulo',$this->titulo,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

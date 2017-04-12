@@ -153,7 +153,7 @@ class JugadorController extends Controller
 	public function loadModel($id)
 	{
 		//$model=Jugador::model()->with(array("data","imagenes","avatar"))->findByPk($id);
-		$model=Jugador::model()->with(array("data","imagenes"))->findByPk($id);
+		$model=Jugador::model()->with(array("imagenes"))->findByPk($id);
 		//$model=Jugador::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');

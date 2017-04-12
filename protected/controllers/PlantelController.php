@@ -75,6 +75,7 @@ class PlantelController extends Controller
 		$model=new Plantel;
 		
 			$model->club= $_POST["club"];
+			$model->categoria= $_POST["categoria"];
 		
 		$model->nombre=$_POST["nombre"];
 		// Uncomment the following line if AJAX validation is needed

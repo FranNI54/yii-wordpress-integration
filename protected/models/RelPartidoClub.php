@@ -38,7 +38,8 @@ class RelPartidoClub extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('partido, club, lado', 'required'),
-			array('partido, club, lado', 'numerical', 'integerOnly'=>true),
+			array('partido, club, lado,resultado', 'numerical', 'integerOnly'=>true),
+			array('resultado',  'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, partido, club, lado', 'safe', 'on'=>'search'),
@@ -55,6 +56,7 @@ class RelPartidoClub extends CActiveRecord
 		return array(
 			'club_data'=>array(self::HAS_ONE ,"Club",array('id'=>'club')),
 			'goles'=>array(self::HAS_MANY ,"Gol",array('partido'=>'id'),"with"=>"jugador_data" ),
+			"plantel"=>array(self::HAS_MANY ,"RelPartidoJugador",array('partido'=>'id') ),
 		);
 	}
 
@@ -68,6 +70,7 @@ class RelPartidoClub extends CActiveRecord
 			'partido' => 'Partido',
 			'club' => 'Club',
 			'lado' => 'Lado',
+
 		);
 	}
 
@@ -91,4 +94,14 @@ class RelPartidoClub extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
+	protected function beforeDelete()
+    {
+		RelPartidoJugador::model()->deleteAll('partido = '.$this->id);
+		return true;
+        
+    }
+	
+	
 }

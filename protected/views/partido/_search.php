@@ -21,11 +21,7 @@
 		<?php echo $form->textField($model,'liga',array('size'=>60,'maxlength'=>300)); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'fec'); ?>
-		<?php echo $form->textField($model,'fec',array('size'=>60,'maxlength'=>300)); ?>
-	</div>
-
+	
 	<div class="row">
 		<?php echo $form->label($model,'fecha'); ?>
 		<?php echo $form->textField($model,'fecha'); ?>

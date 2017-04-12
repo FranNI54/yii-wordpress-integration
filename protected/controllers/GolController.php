@@ -64,10 +64,12 @@ class GolController extends Controller
 	{
 		$model=new Gol;
 		$model->jugador=$_POST["jugador"];
-		$model->partido=$_POST["partido"];
+		$model->partido=$_POST["rel"];
 		$model->minuto=$_POST["minuto"];
 		$model->descripcion=$_POST["desc"];
 		$model->save();
+		$partido= Partido::model()->findByPk($_POST["partido"]);
+		$partido->Contabilizar();
 		$this->redirect(array('/partido/'.$_POST["partido"]));
 		/*
 		
@@ -118,8 +120,10 @@ class GolController extends Controller
 	public function actionDelete($id)
 	{
 		$model=$this->loadModel($id);
-		$partido= $model->partido;
+		$partido= RelPartidoClub::model()->findByPk($model->partido)->partido;
+		
 		$model->delete();
+		Partido::model()->findByPk($partido)->Contabilizar();
 			$this->redirect(array('partido/view/','id'=>$partido));
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		//if(!isset($_GET['ajax']))

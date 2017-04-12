@@ -16,13 +16,20 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Categoria #<?php echo $model->id; ?></h1>
+<h1>Categoria </h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'nombre',
-		'descripcion',
-	),
-)); ?>
+
+<p><strong>Nombre</strong> <?php echo $model->nombre; ?></p>
+<p><strong>Descripción</strong> <?php echo $model->descripcion; ?></p>
+
+<?php 
+$campeonatos= Campeonato::model()->findAllByAttributes(array("division"=>$model->id));
+if(count($campeonatos)>0){
+ ?>
+<h3>Campeonatos</h3>
+<ul>
+<?php foreach($campeonatos as $campeonato){ ?>
+<li><a href="<?php echo Yii::app()->request->baseUrl; ?>/campeonato/<?php echo $model->id; ?>"><?php echo $campeonato->torneo; ?></a></li>
+<?php } ?>
+</ul>
+<?php } ?>

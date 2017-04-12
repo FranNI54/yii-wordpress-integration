@@ -56,10 +56,12 @@ class Jugador extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
+		$nombreClase=get_class($this);
 		return array(
-			'data'=>array(self::HAS_MANY ,"DataJugador",array('jugador'=>'id') ),
-			'imagenes'=>array(self::HAS_MANY ,"RelImagenJugador",array('jugador'=>'id') ),
-			'avatar'=>array(self::HAS_MANY ,"RelImagenJugador","jugador","condition"=>"avatar.avatar=1" ),
+			
+			'imagenes'=>array(self::HAS_MANY ,"RelImagen",array('modelId'=>'id'),"condition"=>"model = '$nombreClase'", ),
+			'avatar'=>array(self::HAS_MANY ,"RelImagen","modelId","condition"=>"avatar.destacada=1 and avatar.model = '$nombreClase' " ),
+			'data'=>array(self::HAS_MANY ,"DataExtra",array('modelId'=>'id'),"condition"=>"model = '$nombreClase'", ),
 		);
 	}
 
@@ -112,7 +114,9 @@ class Jugador extends CActiveRecord
 			$auxPartidos= array();
 			foreach($queryPartidos as $partido){
 				$auxObj= $partido->partido_data;
+				if(isset($partido["campeonato"])){
 				$auxObj->campeonato=$partido["campeonato"];
+				}
 				$auxObj["rel"]= $partido->id;
 				array_push($auxPartidos,$auxObj);
 				

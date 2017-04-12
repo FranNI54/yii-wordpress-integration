@@ -27,7 +27,13 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'division'); ?>
-		<?php echo $form->textField($model,'division',array('size'=>60,'maxlength'=>300)); ?>
+		<select name="Campeonato[division]" >
+			<?php 
+			$categorias= Categoria::model()->findAll();
+			foreach($categorias as $categoria){ ?>
+				<option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+			<?php } ?>
+		</select>
 		<?php echo $form->error($model,'division'); ?>
 	</div>
 
@@ -61,10 +67,11 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'ganado'); ?>
 		<?php //echo $form->textField($model,'ganado'); ?>
-		<select name="Campeonato[ganado]">
-			<option value="0" selected>No</option>
-			<option value="1">Si</option>
-		</select>
+		<input id="Campeonato_ganado2" type="text" value="<?php if(isset($model->ganado)){
+			$club= Club::model()->findByPk($model->ganado);
+			echo $club->nombre;
+		} ?>" />
+		<input id="Campeonato_ganado" type="hidden" name="Campeonato[ganado]" value="<?php if(isset($model->club)){echo $model->club;} ?>" />
 		<?php echo $form->error($model,'ganado'); ?>
 	</div>
 
@@ -81,3 +88,34 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<script>
+		
+	var data = [
+		//{ value: "AL", label: "Alabama" },
+		<?php
+		$clubes= Club::model()->findAll();
+		foreach($clubes as $club){ ?>
+			{value:"<?php echo $club->id; ?>",label: "<?php echo $club->nombre; ?>"},
+		<?php } ?>
+	];
+	jQuery(function() {
+		
+		jQuery("#Campeonato_ganado2").autocomplete({
+			source: data,
+			focus: function(event, ui) {
+				// prevent autocomplete from updating the textbox
+				event.preventDefault();
+				// manually update the textbox
+				jQuery(this).val(ui.item.label);
+			},
+			select: function(event, ui) {
+				// prevent autocomplete from updating the textbox
+				event.preventDefault();
+				// manually update the textbox and hidden field
+				jQuery(this).val(ui.item.label);
+				jQuery("#Campeonato_ganado").val(ui.item.value);
+			}
+		});
+	});
+</script>

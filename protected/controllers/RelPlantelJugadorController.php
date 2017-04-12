@@ -97,8 +97,10 @@ class RelPlantelJugadorController extends Controller
 		if(isset($_POST['RelPlantelJugador']))
 		{
 			$model->attributes=$_POST['RelPlantelJugador'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()){
+				
+				$this->redirect(array('/plantel/'.$model->plantel));
+			}
 		}
 
 		$this->render('update',array(

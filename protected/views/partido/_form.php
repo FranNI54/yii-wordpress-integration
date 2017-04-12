@@ -24,7 +24,8 @@
 		<?php //echo $form->textField($model,'liga',array('size'=>60,'maxlength'=>300)); ?>
 		<?php if(isset($model->liga)){ ?>
 		<input id="Partido_liga2" type="text" placeholder="" value="<?php $campeonato= Campeonato::model()->findByPk($model->liga);
-		echo $campeonato->torneo.'('.$campeonato->division.','.$campeonato->fecha.')';
+		$division= Categoria::model()->findByPk($campeonato->division);
+		echo $campeonato->torneo.'('.$division->nombre.','.$campeonato->fecha.')';
 		?>" <?php if(!isset($update)){ ?>disabled <?php } ?> />
 		<input type="hidden" id="Partido_liga" type="text" name="Partido[liga]" value="<?php echo $model->liga; ?>" />
 		<?php }else{ ?>
@@ -34,11 +35,20 @@
 		<?php echo $form->error($model,'liga'); ?>
 	</div>
 
+	<?php if(false){ ?>
 	<div class="row">
-		<?php echo $form->labelEx($model,'fec'); ?>
-		<?php echo $form->textField($model,'fec',array('size'=>60,'maxlength'=>300)); ?>
-		<?php echo $form->error($model,'fec'); ?>
+		<?php echo $form->labelEx($model,'categoria'); ?>
+		<?php //echo $form->textField($model,'categoria',array('size'=>60,'maxlength'=>300)); ?>
+		<select name="Partido[categoria]" >
+			<?php 
+			$categorias= Categoria::model()->findAll();
+			foreach($categorias as $categoria){ ?>
+				<option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+			<?php } ?>
+		</select>
+		<?php echo $form->error($model,'categoria'); ?>
 	</div>
+	<?php } ?>
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fecha'); ?>
@@ -65,44 +75,7 @@
 			});
 			</script>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'condicion'); ?>
-		<?php //echo $form->textField($model,'condicion',array('size'=>60,'maxlength'=>100)); ?>
-		<select name="Partido[condicion]">
-			<option value="0" selected>Local</option>
-			<option value="1">Visitante</option>
-		</select>
-		<?php echo $form->error($model,'condicion'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'rival'); ?>
-		<?php echo $form->textField($model,'rival',array('size'=>60,'maxlength'=>100)); ?>
-		<?php echo $form->error($model,'rival'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'resultado'); ?>
-		<?php echo $form->textField($model,'resultado',array('size'=>60,'maxlength'=>100)); ?>
-		<?php echo $form->error($model,'resultado'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'convertidos'); ?>
-		<?php echo $form->textField($model,'convertidos'); ?>
-		<?php echo $form->error($model,'convertidos'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'victoria'); ?>
-		<?php //echo $form->textField($model,'victoria'); ?>
-		<select name="Partido[victoria]">
-			<option value="0" selected>No</option>
-			<option value="1">Si</option>
-		</select>
-		<?php echo $form->error($model,'victoria'); ?>
-	</div>
-
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'comentario'); ?>
 		<?php echo $form->textArea($model,'comentario',array('rows'=>6, 'cols'=>50)); ?>
@@ -123,8 +96,10 @@
 			//{ value: "AL", label: "Alabama" },
 			<?php
 			$campeonatos= Campeonato::model()->findAll();
-			foreach($campeonatos as $campeonato){ ?>
-				{value:"<?php echo $campeonato->id; ?>",label: "<?php echo $campeonato->torneo; ?>(<?php echo $campeonato->division; ?>,<?php echo $campeonato->fecha; ?>)"},
+			foreach($campeonatos as $campeonato){ 
+				$division= Categoria::model()->findByPk($campeonato->division);
+			?>
+				{value:"<?php echo $campeonato->id; ?>",label: "<?php echo $campeonato->torneo; ?>(<?php echo $division->nombre; ?>,<?php echo $campeonato->fecha; ?>)"},
 			<?php } ?>
 		];
 		jQuery(function() {

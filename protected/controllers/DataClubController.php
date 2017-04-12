@@ -63,6 +63,9 @@ class DataClubController extends Controller
 	public function actionCreate()
 	{
 		$model=new DataClub;
+		if(isset($_POST["club"])){
+			$model->club= $_POST["club"];
+		}
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -71,7 +74,7 @@ class DataClubController extends Controller
 		{
 			$model->attributes=$_POST['DataClub'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('/club/'.$model->club));
 		}
 
 		$this->render('create',array(

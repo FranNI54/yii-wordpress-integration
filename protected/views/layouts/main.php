@@ -9,13 +9,16 @@ get_header(); ?>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-ui.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/js.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/datatables/datatables.js"></script>
+
 <div style="padding:10px;">
+<?php if(is_user_logged_in()){ ?>
 <?php
-$secciones= ["jugador","partido","campeonato","plantel"];
+$secciones= ["jugador","partido","campeonato","club","categoria"];
 	foreach($secciones as $seccion){
 		?>
-		<div style="display:inline-block;width:300px;">
+		<div style="display:inline-block;width:200px;">
 		<h3 style="text-transform:capitalize;padding-top:0;"><?php echo $seccion; ?></h3>
 		<a href="<?php echo home_url().'/'.$seccion.'/create'; ?>" >Crear</a><span> / </span>
 		<a href="<?php echo home_url().'/'.$seccion.'/admin'; ?>" >Administrar</a>
@@ -24,11 +27,13 @@ $secciones= ["jugador","partido","campeonato","plantel"];
 		<?php
 	}
 	?>
+	<?php } ?>
 	<?php
 		// echos Yii content
 	     echo $content;
 	?>
 </div>
+
 <script>
     var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {

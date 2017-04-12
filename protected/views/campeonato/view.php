@@ -16,24 +16,23 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Campeonato #<?php echo $model->id; ?></h1> <?php if(is_user_logged_in()){ ?><a href="<?php echo Yii::app()->request->baseUrl; ?>/campeonato/update/<?php echo $model->id; ?>" >Editar campeonato</a><br><br><?php } ?>
+<h1>Campeonato</h1> <?php if(is_user_logged_in()){ ?><a href="<?php echo Yii::app()->request->baseUrl; ?>/campeonato/update/<?php echo $model->id; ?>" >Editar campeonato</a><?php } ?>
 
-<?php /*$this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'torneo',
-		'division',
-		'fecha',
-		'ganado',
-		'detalle',
-	),
-));*/ ?>
 
-<p><strong>Torneo:</strong> <?php echo $model->torneo; ?></p>
-<p><strong>Division:</strong> <?php echo $model->division; ?></p>
+<h2><strong>Torneo:</strong> <?php echo $model->torneo; ?></h2>
+<p><strong>División:</strong> <?php
+if($model->division==0){
+	echo "No definida";
+}else{
+	$categoria= Categoria::model()->findByPk($model->division);
+	echo $categoria->nombre;
+}
+?></p>
 <p><strong>Fecha:</strong> <?php echo $model->fecha; ?></p>
-<p><strong>Ganado:</strong> <?php if($model->ganado==1){echo "Si";}else{echo "No";} ?></p>
+<p><strong>Ganador:</strong> <?php if($model->ganado==0){echo "En curso";}else{
+	$ganador= Club::model()->findByPk($model->ganado);
+	echo $ganador->nombre;
+} ?></p>
 <?php if(isset($model->detalle)&&$model->detalle!=""){ ?>
 <p><?php echo $model->detalle; ?></p>
 <?php } ?>

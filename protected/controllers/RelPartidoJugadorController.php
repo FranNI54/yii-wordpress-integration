@@ -73,8 +73,10 @@ class RelPartidoJugadorController extends Controller
 		if(isset($_POST['RelPartidoJugador']))
 		{
 			$model->attributes=$_POST['RelPartidoJugador'];
+			$partido= Partido::model()->findByPk( RelPartidoClub::model()->findByPk($model->partido)->partido);		
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array("partido/view","id"=>$partido->id));
+			//$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -92,6 +94,9 @@ class RelPartidoJugadorController extends Controller
 			foreach($jugadores as $jugador){
 				$model=new RelPartidoJugador;
 				$model->jugador= $jugador->jugador;
+				$model->campo= $jugador->campo;
+				$model->camiseta= $jugador->camiseta;
+				$model->detalle= $jugador->detalle;
 				$model->partido= $_POST["club"];
 				$model->save();
 			}
@@ -136,7 +141,7 @@ class RelPartidoJugadorController extends Controller
 		{
 			$model->attributes=$_POST['RelPartidoJugador'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('/partido/'.$model->partido));
 		}
 
 		$this->render('update',array(
@@ -173,6 +178,7 @@ class RelPartidoJugadorController extends Controller
 		
 		$model=$this->loadModel($id);
 		$partido=$model->partido;
+		$partido= RelPartidoClub::model()->findByPk($model->partido)->partido;
 		$model->delete();
 		$this->redirect(array("partido/view","id"=>$partido));
 	}

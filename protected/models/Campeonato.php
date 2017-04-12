@@ -29,7 +29,7 @@ class Campeonato extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('torneo, division, fecha,ganado', 'required'),
+			array('torneo, division, fecha', 'required'),
 			array('ganado', 'numerical', 'integerOnly'=>true),
 			array('torneo, division', 'length', 'max'=>300),
 			array('fecha', 'length', 'max'=>4),

@@ -24,7 +24,7 @@ function poyo(){
 	
 }
 function dataFerroTest(){
-	$secciones= ["jugador","partido","campeonato","plantel"];
+	$secciones= ["jugador","partido","campeonato","club","categoria"];
 	foreach($secciones as $seccion){
 		?>
 		<h3 style="text-transform:capitalize"><?php echo $seccion; ?></h3>

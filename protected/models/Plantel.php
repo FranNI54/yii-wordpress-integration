@@ -36,8 +36,9 @@ class Plantel extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, club', 'required'),
+			array('nombre, club, categoria', 'required'),
 			array('club', 'numerical', 'integerOnly'=>true),
+			array('categoria', 'numerical', 'integerOnly'=>true),
 			array('nombre', 'length', 'max'=>300),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -66,6 +67,7 @@ class Plantel extends CActiveRecord
 			'id' => 'ID',
 			'nombre' => 'Nombre',
 			'club' => 'Club',
+			'categoria' => 'Categoria',
 		);
 	}
 
@@ -83,6 +85,7 @@ class Plantel extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
 		$criteria->compare('club',$this->club);
+		$criteria->compare('categoria',$this->categoria);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

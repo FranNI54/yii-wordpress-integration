@@ -38,11 +38,12 @@ class Partido extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('liga, fec, fecha, comentario', 'required'),
-			array('liga, fec', 'length', 'max'=>300),
+			array('liga, fecha', 'required'),
+			array('liga', 'length', 'max'=>300),
+			/*array('categoria', 'numerical', 'integerOnly'=>true),*/
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, liga, fec, fecha, comentario', 'safe', 'on'=>'search'),
+			array('id, liga,, fecha, comentario', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,7 +57,6 @@ class Partido extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'liga' => 'Liga',
-			'fec' => 'Fec',
 			'fecha' => 'Fecha',
 			'comentario' => 'Comentario',
 		);
@@ -75,7 +75,7 @@ class Partido extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('liga',$this->liga,true);
-		$criteria->compare('fec',$this->fec,true);
+	
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('comentario',$this->comentario,true);
 
@@ -92,20 +92,69 @@ class Partido extends CActiveRecord
 	 */
 	public function relations()
 	{
+		
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
+		$nombreClase=get_class($this);
 		return array(
 			'liga_data'=>array(self::HAS_ONE ,"Campeonato",array('id'=>'liga') ),
-			'clubes'=>array(self::HAS_MANY ,"RelPartidoClub",array('partido'=>'id'), "with"=>"club_data" ),
-			
+			'clubes'=>array(self::HAS_MANY ,"RelPartidoClub",array('partido'=>'id'), "with"=>array("club_data","goles","plantel") ),
+			'data'=>array(self::HAS_MANY ,"DataExtra",array('modelId'=>'id'),"condition"=>"model = '$nombreClase'", ),
 			
 		);
 	}
 
 	protected function beforeDelete()
     {
-		RelPartidoJugador::model()->deleteAll('partido = '.$this->id);
+		//debería recorrer ambas rel de equipo, borrar los jugadores y las rel
+		$this->clubes;
+		foreach($clubes as $club){
+			$club->delete();
+		}
 		return true;
         
     }
+	
+	protected function afterSave(){
+		if($this->isNewRecord){
+		 $modelClass= get_class($model);
+		$defaults= DataDefault::model()->findAllByAttributes(array("model"=>$modelClass));
+
+		 foreach($defaults as $data){
+			
+			 $auxData= new DataExtra();
+			 $auxData->model= $modelClass;
+			 $auxData->modelId=$this->id;
+			 $auxData->titulo= $data->titulo;
+			 $auxData->texto= $data->texto;
+			
+			 $auxData->save();
+		 }
+		}
+		parent::afterSave();
+		 
+	}
+	
+	public function Contabilizar(){
+		$this->clubes;
+		$count1= count($this->clubes[0]->goles);
+		$count2= count($this->clubes[1]->goles);
+
+		if($count1>$count2){
+			$this->clubes[0]->resultado=1;
+			$this->clubes[0]->save();
+			$this->clubes[1]->resultado=0;
+			$this->clubes[1]->save();
+		}else if($count1<$count2){
+			$this->clubes[0]->resultado=0;
+			$this->clubes[0]->save();
+			$this->clubes[1]->resultado=1;
+			$this->clubes[1]->save();
+		}if($count1==$count2){
+			$this->clubes[0]->resultado=2;
+			$this->clubes[0]->save();
+			$this->clubes[1]->resultado=2;
+			$this->clubes[1]->save();
+		}
+	}
 }

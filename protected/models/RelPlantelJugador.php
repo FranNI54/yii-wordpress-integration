@@ -39,9 +39,9 @@ class RelPlantelJugador extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('plantel, jugador, campo', 'required'),
-			array('plantel, jugador, campo', 'numerical', 'integerOnly'=>true),
+			array('plantel, jugador, campo,camiseta', 'numerical', 'integerOnly'=>true),
 			array('detalle', 'length', 'max'=>300),
-			array('detalle', 'safe'),
+			array('detalle,camiseta', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, plantel, jugador, campo, detalle', 'safe', 'on'=>'search'),
@@ -70,6 +70,7 @@ class RelPlantelJugador extends CActiveRecord
 			'jugador' => 'Jugador',
 			'campo' => 'Campo',
 			'detalle' => 'Detalle',
+			'camiseta' => 'Camiseta',
 		);
 	}
 
@@ -89,6 +90,7 @@ class RelPlantelJugador extends CActiveRecord
 		$criteria->compare('jugador',$this->jugador);
 		$criteria->compare('campo',$this->campo);
 		$criteria->compare('detalle',$this->detalle,true);
+		$criteria->compare('camiseta',$this->camiseta);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -96,6 +98,9 @@ class RelPlantelJugador extends CActiveRecord
 	}
 	
 	public function beforeSave(){
+		if(isset($this->id)){
+			return true;
+		}
 		$rel= RelPlantelJugador::model()->findByAttributes(array("jugador"=>$this->jugador,"plantel"=>$this->plantel));
 		if(isset($rel)){
 			return false;
