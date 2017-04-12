@@ -67,7 +67,7 @@ class DataExtraController extends Controller
 		if(isset($_POST["model"])){
 			
 			$model->model= $_POST["model"];
-			$model->modelId= $_POST["idModel"];
+			$model->modelId= $_POST["modelId"];
 		}
 
 		// Uncomment the following line if AJAX validation is needed

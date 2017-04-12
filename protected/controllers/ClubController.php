@@ -51,7 +51,8 @@ class ClubController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$model=Club::model()->with(array("imagenes","data","planteles"))->findByPk($id);
+		$model=Club::model()->findByPk($id);
+		$model=Club::model()->with(array("planteles"))->findByPk($id);
 		$this->render('view',array(
 			'model'=>$model,
 		));

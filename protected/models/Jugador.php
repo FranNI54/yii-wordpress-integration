@@ -149,8 +149,8 @@ class Jugador extends CActiveRecord
 	public function beforeDelete()
     {
 		RelPlantelJugador::model()->deleteAll('jugador = '.$this->id);
-		RelImagenJugador::model()->deleteAll('jugador = '.$this->id);
-		DataJugador::model()->deleteAll('jugador = '.$this->id);
+		RelImagen::model()->deleteAll('modelId = '.$this->id." and model='Jugador'");
+		DataExtra::model()->deleteAll('modelId = '.$this->id." and model='Jugador' ");
 		RelPartidoJugador::model()->deleteAll('jugador = '.$this->id);
 		//Yii::import('application.controllers.GolController');
 		//GolController::model()->deleteAll('jugador = '.$this->id);
