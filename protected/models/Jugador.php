@@ -153,7 +153,11 @@ class Jugador extends CActiveRecord
 		DataExtra::model()->deleteAll('modelId = '.$this->id." and model='Jugador' ");
 		RelPartidoJugador::model()->deleteAll('jugador = '.$this->id);
 		//Yii::import('application.controllers.GolController');
-		//GolController::model()->deleteAll('jugador = '.$this->id);
+		Gol::model()->deleteAll('jugador = '.$this->id);
+		/*$goles= GolesController::model()->findAllByAttributes(array("jugador"=>$this->id));
+		foreach($goles as $gol){
+			$gol->delete();
+		}*/
 		return true;
     }
 }

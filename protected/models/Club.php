@@ -90,4 +90,13 @@ class Club extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		RelPartidoClub::model()->deleteAll('club = '.$this->id);
+		RelImagen::model()->deleteAll('modelId = '.$this->id." and model='Club'");
+		DataExtra::model()->deleteAll('modelId = '.$this->id." and model='Club' ");
+		
+		return true;
+    }
 }
