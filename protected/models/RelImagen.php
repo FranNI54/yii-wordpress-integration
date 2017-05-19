@@ -94,4 +94,18 @@ class RelImagen extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='RelImagen'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='RelImagen' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='RelImagen' ") as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }

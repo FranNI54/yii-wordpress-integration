@@ -140,6 +140,10 @@ class RelImagenController extends Controller
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('RelImagen');
+		/*$dataProvider=new CActiveDataProvider('RelImagen',array(
+    'criteria'=>array(
+        'with'=>array('imagen_data'),
+    )));*/
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -213,7 +217,7 @@ class RelImagenController extends Controller
 				
 
 					$formato="";
-					if(strpos($_FILES['file']['name'],".png")>0){
+					/*if(strpos($_FILES['file']['name'],".png")>0){
 						$formato= ".png";
 					}
 					if(strpos($_FILES['file']['name'],".jpg")>0){
@@ -221,7 +225,8 @@ class RelImagenController extends Controller
 					}
 					if(strpos($_FILES['file']['name'],".jpeg")>0){
 						$formato= ".jpeg";
-					}
+					}*/
+					$formato=  substr($_FILES['file']['name'],strrpos($_FILES['file']['name'],"."));
 					$targetFile =  $targetPath.$nombre.$formato;
 				
 

@@ -99,4 +99,21 @@ class Imagen extends CActiveRecord
 				'application.behaviors.ActiveRecordLogableBehavior',
 		);
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('imagen = '.$this->id) as $rel){
+			$rel->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Imagen'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Imagen' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Imagen' ") as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }

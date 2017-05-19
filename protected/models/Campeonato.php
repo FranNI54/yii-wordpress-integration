@@ -118,10 +118,18 @@ class Campeonato extends CActiveRecord
 	
 	protected function beforeDelete()
     {
-		$partidos= Partido::model()->findAllByAttributes(array("liga"=>$this->id));
-		foreach($partidos as $partido){
-			$partido->liga=0;
-			$partido->save();
+		foreach(Partido::model()->findAll("liga= ".$this->id) as $partido){
+			$partido->delete();
+		}		
+		
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Campeonato'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Campeonato' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Campeonato' ") as $data){
+			$data->delete();
 		}
 		return true;
         

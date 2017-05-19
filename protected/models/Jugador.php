@@ -148,16 +148,26 @@ class Jugador extends CActiveRecord
 	
 	public function beforeDelete()
     {
-		RelPlantelJugador::model()->deleteAll('jugador = '.$this->id);
-		RelImagen::model()->deleteAll('modelId = '.$this->id." and model='Jugador'");
-		DataExtra::model()->deleteAll('modelId = '.$this->id." and model='Jugador' ");
-		RelPartidoJugador::model()->deleteAll('jugador = '.$this->id);
-		//Yii::import('application.controllers.GolController');
-		Gol::model()->deleteAll('jugador = '.$this->id);
-		/*$goles= GolesController::model()->findAllByAttributes(array("jugador"=>$this->id));
-		foreach($goles as $gol){
+		foreach(RelPlantelJugador::model()->findAll('jugador = '.$this->id) as $rel){
+			$rel->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Jugador'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Jugador' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Jugador' ") as $data){
+			$data->delete();
+		}
+		foreach(RelPartidoJugador::model()->findAll('jugador = '.$this->id) as $rel){
+			$rel->delete();
+		}
+		
+		foreach(Gol::model()->findAll('jugador = '.$this->id) as $gol){
 			$gol->delete();
-		}*/
+		}
+		
 		return true;
     }
 }

@@ -95,4 +95,18 @@ class Gol extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Gol'")as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Gol' ")as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Gol' ")as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }

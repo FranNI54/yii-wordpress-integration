@@ -95,4 +95,18 @@ class DataExtra extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='DataExtra'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='DataExtra' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='DataExtra' ") as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }

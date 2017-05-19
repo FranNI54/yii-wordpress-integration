@@ -94,7 +94,18 @@ class Plantel extends CActiveRecord
 	
 	protected function beforeDelete()
     {
-		RelPlantelJugador::model()->deleteAll('plantel = '.$this->id);
+		foreach(RelPlantelJugador::model()->findAll('plantel = '.$this->id) as $rel){
+			$rel->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Plantel'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Plantel' ") as $rel){
+			$rel->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Plantel' ") as $data){
+			$data->delete();
+		}
 		return true;
     }
 }

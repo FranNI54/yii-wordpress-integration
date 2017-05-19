@@ -21,7 +21,7 @@
 		<input name="RelPartidoClub[partido]" id="RelPartidoClub_partido" type="hidden" value="<?php if(isset($model->partido)){echo $model->partido;} ?>"  >
 		<input name="partido_nombre" id="RelPartidoClub_partido" type="text" value="<?php if(isset($model->partido)){
 			$partido= Partido::model()->findByPk($model->partido);
-			echo $partido["fecha"].'('.$partido->liga_data["torneo"].' '.$partido->liga_data["fecha"].'-'.$partido->liga_data["division"].')';
+			echo $partido["fecha"].'('.$partido->liga_data["torneo"].' '.$partido->liga_data["fecha"].'-'.Categoria::model()->findByPk( $partido->liga_data["division"])->nombre.')';
 			} ?>" disabled>
 		<?php echo $form->error($model,'partido'); ?>
 	</div>

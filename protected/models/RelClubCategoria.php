@@ -86,4 +86,18 @@ class RelClubCategoria extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='RelClubCategoria'")as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='RelClubCategoria' ")as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='RelClubCategoria' ")as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }

@@ -128,4 +128,21 @@ class RelPartidoJugador extends CActiveRecord
 				'application.behaviors.ActiveRecordLogableBehavior',
 		);
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(Gol::model()->findAll('partido = '.$this->id." and jugador = ".$this->jugador) as $gol){
+			$gol->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='RelPartidoJugador'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='RelPartidoJugador' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='RelPartidoJugador' ") as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }

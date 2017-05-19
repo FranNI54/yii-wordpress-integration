@@ -91,4 +91,18 @@ class DataDefault extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='DataDefault'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='DataDefault' ") as $rel){
+			$rel->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='DataDefault' ") as $rel ){
+			$rel->delete();
+		}
+		return true;
+	}
 }

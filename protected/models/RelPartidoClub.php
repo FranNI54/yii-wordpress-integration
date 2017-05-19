@@ -98,9 +98,18 @@ class RelPartidoClub extends CActiveRecord
 	
 	protected function beforeDelete()
     {
-		RelPartidoJugador::model()->deleteAll('partido = '.$this->id);
-		RelImagen::model()->deleteAll('modelId = '.$this->id." and model='RelPartidoClub'");
-		DataExtra::model()->deleteAll('modelId = '.$this->id." and model='RelPartidoClub' ");
+		foreach(RelPartidoJugador::model()->findAll('partido = '.$this->id) as $rel){
+			$rel->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='RelPartidoClub'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='RelPartidoClub' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='RelPartidoClub' ") as $data){
+			$data->delete();
+		}
 		
 		return true;
         

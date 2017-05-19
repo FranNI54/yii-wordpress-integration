@@ -117,6 +117,18 @@ class RelPlantelJugador extends CActiveRecord
 		);
 	}
 	
-	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='RelPlantelJugador'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='RelPlantelJugador' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='RelPlantelJugador' ") as $data){
+			$data->delete();
+		}
+		return true;
+	}
 	
 }

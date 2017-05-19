@@ -100,16 +100,24 @@ class Partido extends CActiveRecord
 			'liga_data'=>array(self::HAS_ONE ,"Campeonato",array('id'=>'liga') ),
 			'clubes'=>array(self::HAS_MANY ,"RelPartidoClub",array('partido'=>'id'), "with"=>array("club_data","goles","plantel") ),
 			'data'=>array(self::HAS_MANY ,"DataExtra",array('modelId'=>'id'),"condition"=>"model = '$nombreClase'", ),
-			
+			'imagenes'=>array(self::HAS_MANY ,"RelImagen",array('modelId'=>'id'),"condition"=>"model = '$nombreClase'", ),
 		);
 	}
 
 	protected function beforeDelete()
     {
 		//debería recorrer ambas rel de equipo, borrar los jugadores y las rel
-		$this->clubes;
-		foreach($clubes as $club){
-			$club->delete();
+		foreach(RelPartidoClub::model()->findAll("partido = ".$this->id) as $rel){
+			$rel->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Partido'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Partido' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Partido' ") as $data){
+			$data->delete();
 		}
 		return true;
         

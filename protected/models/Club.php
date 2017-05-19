@@ -93,9 +93,21 @@ class Club extends CActiveRecord
 	
 	public function beforeDelete()
     {
-		RelPartidoClub::model()->deleteAll('club = '.$this->id);
-		RelImagen::model()->deleteAll('modelId = '.$this->id." and model='Club'");
-		DataExtra::model()->deleteAll('modelId = '.$this->id." and model='Club' ");
+		foreach(RelPartidoClub::model()->findAll('club = '.$this->id) as $rel){
+			$rel->delete();
+		}
+		foreach(Plantel::model()->findAll("club = ".$this->id) as $plantel){
+			$plantel->delete();
+		}
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Club'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Club' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Club' ") as $data){
+			$data->delete();
+		}
 		
 		return true;
     }

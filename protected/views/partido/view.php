@@ -166,7 +166,7 @@ foreach($jugadores as $jugador){
  
  <?php if(is_user_logged_in()){ ?>
 
- <?php $planteles= Plantel::model()->findAllByAttributes(array("club"=>$club->club));
+ <?php $planteles= Plantel::model()->findAllByAttributes(array("club"=>$club->club,"categoria"=>$model->liga_data->division));
   if(count($planteles)>0){
   ?>
 <form name="myform" action="<?php echo Yii::app()->request->baseUrl; ?>/relPartidoJugador/plantel" method="post" >
@@ -237,10 +237,29 @@ foreach($jugadores as $jugador){
 </form>
 <?php } ?>
 
+
+<?php if(count($model->imagenes)>0){ ?>
+<h3>Imagenes</h3>
+<?php 
+foreach($model->imagenes as $imagen){
+	?> 
+	<div style="display:inline-block;">
+	<img style="max-width:200px;"src="<?php echo  Yii::app()->request->baseUrl."/".$imagen->imagen_data["url"];?>" />
+	
+	<?php
+	if(is_user_logged_in()){ ?>
+	<br>
+		<button type="button" class="assign-avatar" image-id="<?php echo $imagen->id; ?>" style="color:white;" >Asignar como avatar</button><br>
+		<a href="<?php echo Yii::app()->request->baseUrl; ?>/relImagenJugador/delete/<?php echo $imagen->id; ?>" class="confirmation">Quitar relación</a> / 
+		<a href="<?php echo Yii::app()->request->baseUrl; ?>/imagen/delete/<?php echo $imagen->imagen_data["id"]; ?>" class="confirmation">Borrar</a> 
+	<?php } ?>
+	</div>
+	<?php
+} }
+?>
+
 <style>
 h3{margin-top:10px;padding-top:0;}
 </style>
-<h1><?php  $defaults= DataDefault::model()->findAllByAttributes(array("model"=>"Partido"));
-		 echo(count($defaults)); ?></h1>
 		 
 <?php //$auxA= wp_list_categories(array("hide_empty"=>false,"echo"=>false)); ?>

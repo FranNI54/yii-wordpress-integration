@@ -87,4 +87,18 @@ class Categoria extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function beforeDelete()
+    {
+		foreach(RelImagen::model()->findAll('modelId = '.$this->id." and model='Categoria'") as $rel){
+			$rel->delete();
+		}
+		foreach(DataExtra::model()->findAll('modelId = '.$this->id." and model='Categoria' ") as $data){
+			$data->delete();
+		}
+		foreach(DataDefault::model()->findAll("model='Categoria' ") as $data){
+			$data->delete();
+		}
+		return true;
+	}
 }
